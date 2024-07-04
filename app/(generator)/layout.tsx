@@ -1,3 +1,5 @@
+import RetroGrid from "@/components/magicui/retro-grid";
+
 export default function generatorLayout({
   children,
 }: {
@@ -5,7 +7,10 @@ export default function generatorLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <RetroGrid className="-z-10 opacity-60" />
+        {children}
+      </body>
     </html>
   );
 }
