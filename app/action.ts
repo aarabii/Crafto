@@ -16,18 +16,24 @@ export async function generate(
 ) {
   const { object: data } = await generateObject({
     model: groq(model),
-    system: "You generate three notifications for a messages app.",
+    system: `You are an AI assistant tasked with generating an engaging description or bio based on the user input. Use the provided details to tailor the content according to the specified account type, tone, and whether or not to include emojis. 
+    - The bio should not exceed 150 characters.
+    - The description should not exceed 2000 characters and should include relevant hashtags. Provide at least 4 results in JSON format.`,
     prompt: input,
-    maxTokens: 1024,
+    maxTokens: 2048,
     temperature: temperature,
     schema: z.object({
-      data: z.array(
+      result: z.array(
         z.object({
-          description: z.string().describe("Add generated description."),
+          description: z.string().describe("Generated description or bio."),
         })
       ),
     }),
   });
 
-  return { data };
+  return {
+    result: data.result.map((item: { description: string }) => ({
+      result: item.description,
+    })),
+  };
 }

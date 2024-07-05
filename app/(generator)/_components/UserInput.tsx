@@ -42,7 +42,7 @@ const formSchema = z.object({
   temp: z
     .number()
     .min(0, "Temp must be greater than 0")
-    .max(100, "Temp must be atmost to 100"),
+    .max(2, "Temp must be atmost to 100"),
 
   content: z
     .string()
@@ -107,8 +107,8 @@ export const UserInput = () => {
     `;
 
     try {
-      const { data } = await generate(userValues, values.model, values.temp);
-      console.log(data);
+      const { result } = await generate(userValues, values.model, values.temp);
+      console.log(result);
     } catch (e) {
       console.error(e);
     }
