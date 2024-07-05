@@ -24,7 +24,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import MetaIcon from "@/components/Icons/Meta";
@@ -36,6 +35,7 @@ import { Slider } from "@/components/ui/slider";
 import { Info } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { generate } from "@/app/action";
 
 const formSchema = z.object({
   model: z.string().min(1, "Model is required"),
@@ -95,8 +95,23 @@ export const UserInput = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
+
+    const userValues = `
+    UserInput: ${values.content}
+    AccountType: ${values.accountType}
+    Type: ${values.type}
+    Tone: ${values.tone}
+    Emojies: ${values.emojies}
+    `;
+
+    try {
+      const { data } = await generate(userValues, values.model, values.temp);
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

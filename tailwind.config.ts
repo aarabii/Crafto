@@ -89,6 +89,11 @@ const config = {
             backgroundPosition: "var(--bg-size) 0",
           },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -96,6 +101,7 @@ const config = {
         grid: "grid 15s linear infinite",
         shimmer: "shimmer 8s infinite",
         gradient: "gradient 8s linear infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
     },
   },
