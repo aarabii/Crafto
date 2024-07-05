@@ -9,8 +9,8 @@ export const Heading = () => {
           CraftoGram
         </span>
       </h1>
-      <h2 className="text-xl lg:text-3xl font-medium w-full overflow-hidden">
-        <AnimatedShinyText className="w-full whitespace-nowrap overflow-hidden">
+      <h2 className="text-xl lg:text-3xl font-medium">
+        <AnimatedShinyText className="">
           Your go-to tool for creating standout Instagram bios and descriptions.
         </AnimatedShinyText>
       </h2>
