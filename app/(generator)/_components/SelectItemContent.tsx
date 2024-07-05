@@ -8,18 +8,18 @@ type IconProps = {
   className?: string;
 };
 
-export const SelectItemModelContent = ({
+export const SelectItemContent = ({
   IconComponent,
   name,
   size,
 }: {
-  IconComponent: FC<IconProps>;
+  IconComponent?: FC<IconProps>;
   name: string;
-  size: string;
+  size?: string;
 }) => {
   return (
     <div className="flex items-start gap-3 text-muted-foreground">
-      <IconComponent className="size-5" />
+      {IconComponent && <IconComponent className="size-5" />}
       <p className={cn(GeistMono, "font-mono")}>
         <span className={"text-foreground font-sans font-medium mr-2"}>
           {name}

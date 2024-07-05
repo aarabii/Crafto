@@ -31,9 +31,11 @@ import MetaIcon from "@/components/Icons/Meta";
 import MistralIcon from "@/components/Icons/Mistral";
 import GoogleIcon from "@/components/Icons/Google";
 
-import { SelectItemModelContent } from "./SelectItemModelContent";
+import { SelectItemContent } from "./SelectItemContent";
 import { Slider } from "@/components/ui/slider";
 import { Info } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 
 const formSchema = z.object({
   model: z.string().min(1, "Model is required"),
@@ -105,7 +107,9 @@ export const UserInput = () => {
           className="grid w-full items-start gap-6 space-y-8"
         >
           <fieldset className="grid gap-6 rounded-lg border p-4 bg-background/10 backdrop-blur-sm">
-            <legend className="text-lg font-semibold">Settings</legend>
+            <legend className="text-md font-medium -ml-1 px-1">
+              Model Settings
+            </legend>
             <div className="grid gap-3">
               {/* Model */}
               <FormField
@@ -125,35 +129,35 @@ export const UserInput = () => {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="llama3-8b-8192">
-                          <SelectItemModelContent
+                          <SelectItemContent
                             IconComponent={MetaIcon}
                             name="LLaMA3"
                             size="8B"
                           />
                         </SelectItem>
                         <SelectItem value="llama3-70b-8192">
-                          <SelectItemModelContent
+                          <SelectItemContent
                             IconComponent={MetaIcon}
                             name="LLaMA3"
                             size="70B"
                           />
                         </SelectItem>
                         <SelectItem value="mixtral-8x7b-32768">
-                          <SelectItemModelContent
+                          <SelectItemContent
                             IconComponent={MistralIcon}
                             name="Mixtral"
                             size="8x7B"
                           />
                         </SelectItem>
                         <SelectItem value="gemma-7b-it">
-                          <SelectItemModelContent
+                          <SelectItemContent
                             IconComponent={GoogleIcon}
                             name="Gemma"
                             size="7B"
                           />
                         </SelectItem>
                         <SelectItem value="gemma2-9b-it">
-                          <SelectItemModelContent
+                          <SelectItemContent
                             IconComponent={GoogleIcon}
                             name="Gemma2"
                             size="9B"
@@ -208,8 +212,170 @@ export const UserInput = () => {
                 )}
               />
             </div>
-            <Button type="submit">Generate</Button>
           </fieldset>
+          {/* User Settings  */}
+          <fieldset className="grid gap-6 rounded-lg border p-4 bg-background/10 backdrop-blur-sm">
+            <legend className="text-md font-medium -ml-1 px-1">
+              Input Settings
+            </legend>
+
+            {/* About the content */}
+            <div className="grid gap-3">
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center justify-between pb-2">
+                      About Your Content
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Add few sentences about the content you want to generate..."
+                        className="min-h-[10rem]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Select containes */}
+            <div className="grid grid-cols-3 gap-3">
+              {/* account type  */}
+              <FormField
+                control={form.control}
+                name="accountType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Account Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your account type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Personal">
+                          <SelectItemContent name="Personal" />
+                        </SelectItem>
+                        <SelectItem value="Business">
+                          <SelectItemContent name="Business" />
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* type */}
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Generate Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Generate type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Bio">
+                          <SelectItemContent name="Bio" />
+                        </SelectItem>
+                        <SelectItem value="Description">
+                          <SelectItemContent name="Description" />
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* tone  */}
+              <FormField
+                control={form.control}
+                name="tone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tone</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a tone" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Professional">
+                          <SelectItemContent name="Professional" />
+                        </SelectItem>
+                        <SelectItem value="Casual">
+                          <SelectItemContent name="Casual" />
+                        </SelectItem>
+                        <SelectItem value="Friendly">
+                          <SelectItemContent name="Friendly" />
+                        </SelectItem>
+                        <SelectItem value="Formal">
+                          <SelectItemContent name="Formal" />
+                        </SelectItem>
+                        <SelectItem value="Funny">
+                          <SelectItemContent name="Funny" />
+                        </SelectItem>
+                        <SelectItem value="Sarcastic">
+                          <SelectItemContent name="Sarcastic" />
+                        </SelectItem>
+                        <SelectItem value="thoughtful">
+                          <SelectItemContent name="thoughtful" />
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Emojies */}
+
+            <div className="grid gap-3">
+              <FormField
+                control={form.control}
+                name="emojies"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormLabel className="text-sm mr-4">Add emojies</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="!my-0"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </fieldset>
+
+          <Button className="rounded" type="submit">
+            Generate
+          </Button>
         </form>
       </Form>
     </div>
