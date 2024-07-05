@@ -1,12 +1,18 @@
 "use client";
 
+import { use, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { CraftoContext } from "@/context/Context";
+
+import { generate } from "@/app/action";
+
+import { Info, Loader2 } from "lucide-react";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,17 +31,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
 
 import MetaIcon from "@/components/Icons/Meta";
 import MistralIcon from "@/components/Icons/Mistral";
 import GoogleIcon from "@/components/Icons/Google";
 
 import { SelectItemContent } from "./SelectItemContent";
-import { Slider } from "@/components/ui/slider";
-import { Info } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { generate } from "@/app/action";
 
 const formSchema = z.object({
   model: z.string().min(1, "Model is required"),
@@ -55,9 +59,9 @@ const formSchema = z.object({
     }),
   }),
 
-  type: z.enum(["Bio", "Description"], {
+  type: z.enum(["Bio", "Caption"], {
     errorMap: () => ({
-      message: "Type is required and should be either Bio or Description",
+      message: "Type is required and should be either Bio or Caption",
     }),
   }),
 
@@ -89,14 +93,16 @@ export const UserInput = () => {
       temp: 1,
       content: "",
       accountType: "Personal",
-      type: "Description",
+      type: "Caption",
       tone: "Professional",
       emojies: false,
     },
   });
 
+  const { setOutput, setLoading, loading } = useContext(CraftoContext);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    setLoading(true);
 
     const userValues = `
     UserInput: ${values.content}
@@ -107,10 +113,11 @@ export const UserInput = () => {
     `;
 
     try {
-      const { result } = await generate(userValues, values.model, values.temp);
-      console.log(result);
+      const { data } = await generate(userValues, values.model, values.temp);
+      setOutput(data);
+      setLoading(false);
     } catch (e) {
-      console.error(e);
+      console.error("here", e);
     }
   };
 
@@ -220,7 +227,9 @@ export const UserInput = () => {
                       min={1}
                       max={2}
                       step={0.1}
-                      onValueChange={(val) => onChange(val[0])}
+                      onValueChange={(val) => {
+                        onChange(val[0]);
+                      }}
                     />
                     <FormMessage />
                   </FormItem>
@@ -309,8 +318,8 @@ export const UserInput = () => {
                         <SelectItem value="Bio">
                           <SelectItemContent name="Bio" />
                         </SelectItem>
-                        <SelectItem value="Description">
-                          <SelectItemContent name="Description" />
+                        <SelectItem value="Caption">
+                          <SelectItemContent name="Caption" />
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -388,8 +397,12 @@ export const UserInput = () => {
             </div>
           </fieldset>
 
-          <Button className="rounded" type="submit">
-            Generate
+          <Button className="rounded" type="submit" disabled={loading}>
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              "Generate"
+            )}
           </Button>
         </form>
       </Form>
