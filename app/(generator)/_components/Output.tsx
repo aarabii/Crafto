@@ -25,7 +25,7 @@ export const Output = () => {
       {loading ? (
         <Skeleton className="w-full h-full" />
       ) : (
-        <ul className="flex flex-col items-start justify-start space-y-12 p-16">
+        <ul className="flex flex-col items-start justify-start space-y-8 sm:space-y-12 p-8 py-12 xs:p-8 xs:py-12 sm:p-12 lg:p-16">
           {output.result.map((item, index) => (
             <OutputCard key={index} text={item.text} />
           ))}

@@ -267,7 +267,7 @@ export const UserInput = () => {
             </div>
 
             {/* Select containes */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               {/* account type  */}
               <FormField
                 control={form.control}
